@@ -1,0 +1,20 @@
+{
+  "generator-react-firebase": {
+    "promptValues": {
+      "githubUser": "shaurya157",
+      "includeRedux": false,
+      "includeFirestore": false,
+      "otherFeatures": [
+        "Firebase Functions (with ESNext support)",
+        "Tests for React Components (Jest)",
+        "Tests for UI (Cypress)",
+        "Client Side Error Reporting (Stackdriver)"
+      ],
+      "functionsTestTool": "jest",
+      "typescriptCloudFunctions": false,
+      "firebaseKey": "AIzaSyBnr_xHqLEGLQfE62Z0_8WclNlyVqihXmk",
+      "firebaseProjectId": "fashion-project-31c5b",
+      "appId": "1:1022838836131:web:95c4d1928d6b4fc0d5e816"
+    }
+  }
+}
