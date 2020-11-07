@@ -1,39 +1,25 @@
 import React from 'react'
-import { Route, Switch, useRouteMatch } from 'react-router-dom'
-import { SuspenseWithPerf } from 'reactfire'
-import LoadingSpinner from 'components/LoadingSpinner'
+import Paper from '@material-ui/core/Paper'
+import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
 import styles from './ProfilePage.styles'
-import { renderChildren } from 'utils/router'
-import ProfileRoute from 'routes/Profile/routes/Profile'
-// import ProjectRoute from 'routes/Projects/routes/Project'
+import ProfileInfo from '../ProfileInfo'
+import ProfileTab from '../ProfileTab'
 const useStyles = makeStyles(styles)
 
 function ProfilePage() {
-  //Router for Profile page. Subcomponents are the actual display components
-  // const classes = useStyles()
-  const match = useRouteMatch()
+  const classes = useStyles()
 
   return (
-    <Switch>
-      {/* Child routes */}
-      {renderChildren([ProfileRoute])}
-      {/* Main Route */}
-
-    </Switch>
+    <Grid container className={classes.root} justify="center">
+      <Grid item xs={10} md={8} lg={6} className={classes.gridItem}>
+        <Paper className={classes.pane}>
+          <ProfileInfo />
+          <ProfileTab />
+        </Paper>
+      </Grid>
+    </Grid>
   )
 }
-
-// <Route
-//   exact
-//   path={match.path}
-//   render={() => (
-//     <SuspenseWithPerf
-//       fallback={<LoadingSpinner />}
-//       traceId="load-projects">
-//       <ProjectsList />
-//     </SuspenseWithPerf>
-//   )}
-// />
 
 export default ProfilePage
