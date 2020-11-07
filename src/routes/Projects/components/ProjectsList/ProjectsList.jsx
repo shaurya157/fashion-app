@@ -97,7 +97,7 @@ function ProjectsList() {
             return (
               <ProjectTile
                 key={`Project-${snapshot.key}-${ind}`}
-                project={project}
+                project={project && project}
                 projectId={snapshot.key}
               />
             )
