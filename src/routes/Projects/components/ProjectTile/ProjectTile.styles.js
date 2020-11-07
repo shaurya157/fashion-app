@@ -3,10 +3,10 @@ export default (theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    height: '200px',
-    width: '300px',
+    // height: '200px',
+    width: '500px',
     margin: theme.spacing(0.5),
-    padding: theme.spacing(1.3)
+    // padding: theme.spacing(1.3)
   },
   top: {
     display: 'flex',
@@ -27,5 +27,8 @@ export default (theme) => ({
     '&:visited': {
       textDecoration: 'none'
     }
-  }
+  },
+  media: {
+    height: 200,
+  },
 })

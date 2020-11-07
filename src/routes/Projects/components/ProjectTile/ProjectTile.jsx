@@ -2,7 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
 import { useDatabase } from 'reactfire'
-import Paper from '@material-ui/core/Paper'
+import Card from '@material-ui/core/Card'
+import CardActionArea from '@material-ui/core/CardActionArea'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import CardMedia from '@material-ui/core/CardMedia'
+import Typography from '@material-ui/core/Typography'
+import Avatar from '@material-ui/core/Avatar'
+import FavoriteIcon from '@material-ui/icons/Favorite'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import DeleteIcon from '@material-ui/icons/Delete'
@@ -13,7 +20,7 @@ import styles from './ProjectTile.styles'
 
 const useStyles = makeStyles(styles)
 
-function ProjectTile({ name, projectId, showDelete }) {
+function ProjectTile({ project, projectId, showDelete }) {
   const classes = useStyles()
   const history = useHistory()
   const { showError, showSuccess } = useNotifications()
@@ -34,13 +41,30 @@ function ProjectTile({ name, projectId, showDelete }) {
         return Promise.reject(err)
       })
   }
-
+  
   return (
-    <Paper className={classes.root}>
-      <div className={classes.top}>
-        <span className={classes.name} onClick={goToProject}>
-          {name || 'No Name'}
-        </span>
+    <Card className={classes.root}>
+      <CardActionArea>
+        <CardMedia
+          className={classes.media}
+          image={project.imageUrl}
+          title={project.name}
+          onClick={goToProject}
+        />
+      </CardActionArea>
+      <CardContent >
+        <Avatar src={""} />
+        <Typography gutterBottom variant="p" component="h2">
+            {project.name || 'No Name'}
+          </Typography>
+          <Typography color="textSecondary">
+            {project.createdBy || 'No Name'}
+          </Typography>
+      </CardContent>
+      <CardActions disableSpacing>
+        <IconButton aria-label="add to favorites">
+          <FavoriteIcon /> 
+        </IconButton>
         {showDelete ? (
           <Tooltip title="delete">
             <IconButton onClick={deleteProject}>
@@ -48,15 +72,15 @@ function ProjectTile({ name, projectId, showDelete }) {
             </IconButton>
           </Tooltip>
         ) : null}
-      </div>
-    </Paper>
+      </CardActions>
+    </Card>
   )
 }
 
 ProjectTile.propTypes = {
   projectId: PropTypes.string.isRequired,
   showDelete: PropTypes.bool,
-  name: PropTypes.string
+  project: PropTypes.object
 }
 
 ProjectTile.defaultProps = {

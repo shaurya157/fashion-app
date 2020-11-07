@@ -7,9 +7,9 @@ export default (theme) => ({
     overflowY: 'scroll'
   },
   tiles: {
-    display: 'flex',
+    display: 'block',
     justifyContent: 'center',
-    flexWrap: 'wrap',
-    '-webkit-flex-flow': 'row wrap'
+    // flexWrap: 'wrap',
+    // '-webkit-flex-flow': 'row wrap'
   }
 })
