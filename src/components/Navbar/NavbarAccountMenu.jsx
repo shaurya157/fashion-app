@@ -6,12 +6,13 @@ import MenuItem from '@material-ui/core/MenuItem'
 import IconButton from '@material-ui/core/IconButton'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import { makeStyles } from '@material-ui/core/styles'
-import { ACCOUNT_PATH, PROFILE_PATH } from 'constants/paths'
+import { ACCOUNT_PATH, PROFILE_PATH, SEARCH_PATH } from 'constants/paths'
 import styles from './Navbar.styles'
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import NewPostDialog from './NewPostDialog'
-import { useNewPostCreation } from 'utils/databaseUtils'
+import { useNewPostCreation, useSearchByTag } from 'utils/databaseUtils'
 import { useUser } from 'reactfire'
+import SearchBar from "material-ui-search-bar";
 
 const useStyles = makeStyles(styles)
 
@@ -40,8 +41,16 @@ function AccountMenu() {
     uploadImage
   } = useNewPostCreation()
 
+  function handleSearchInput(input) {
+    window.location = SEARCH_PATH + `/${input}`
+  }
+
   return (
     <>
+    <SearchBar
+      cancelOnEscape
+      onRequestSearch={handleSearchInput}
+    />
       <IconButton
         aria-owns={anchorEl ? 'menu-appbar' : null}
         aria-haspopup="true"

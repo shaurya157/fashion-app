@@ -12,6 +12,7 @@ import AccountRoute from './Account'
 import NotFoundRoute from './NotFound'
 import ProfileRoute from './Profile'
 import PostsRoute from './Posts'
+import SearchRoute from './Search'
 
 export default function createRoutes() {
   return (
@@ -28,7 +29,8 @@ export default function createRoutes() {
               SignupRoute,
               LoginRoute,
               ProfileRoute,
-              PostsRoute
+              PostsRoute,
+              SearchRoute
               /* Add More Routes Here */
             ].map((settings) =>
               settings.authRequired ? (

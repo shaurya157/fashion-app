@@ -38,6 +38,17 @@ function NewPostDialog({ onSubmit, open, onRequestClose, uploadImage }) {
             margin="normal"
             fullWidth
           />
+          <TextField
+            error={!!errors.name}
+            name="tags"
+            label="Enter Tags"
+            inputRef={register({
+              required: false
+            })}
+            inputProps={{ tabIndex: '1' }}
+            margin="normal"
+            fullWidth
+          />
           <Button variant="contained" component="label">
             Upload File
             <input type="file"

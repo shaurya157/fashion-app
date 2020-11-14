@@ -3,21 +3,18 @@ import Card from '@material-ui/core/Card'
 import { makeStyles } from '@material-ui/core/styles'
 import { SuspenseWithPerf } from 'reactfire'
 import LoadingSpinner from 'components/LoadingSpinner'
-// import ProfileData from '../ProfileData'
-import styles from './ProfilePage.styles'
+import styles from './SearchPage.styles'
 import { useParams } from 'react-router-dom'
 import PostsDisplay from 'components/PostsDisplay'
-import {usePostsList} from 'utils/databaseUtils'
+import { useSearchByTag } from 'utils/databaseUtils'
 
 const useStyles = makeStyles(styles)
 
-function ProfilePage() {
+function SearchPage() {
   const classes = useStyles()
-  const { profileId } = useParams()
+  const { searchParam } = useParams()
 
-  const { posts } = usePostsList(profileId)
-
-  console.log(posts);
+  const { posts } = useSearchByTag(searchParam)
 
   return (
     <div className={classes.root}>
@@ -30,4 +27,4 @@ function ProfilePage() {
   )
 }
 
-export default ProfilePage
+export default SearchPage

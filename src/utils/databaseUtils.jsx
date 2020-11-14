@@ -1,6 +1,6 @@
 import { useNotifications } from 'modules/notification'
 import { useDatabaseObject, useDatabase, useUser, useDatabaseList, useStorage } from 'reactfire'
-import { POSTS_COLLECTION } from 'constants/firebasePaths'
+import { POSTS_COLLECTION, TAGS_COLLECTION } from 'constants/firebasePaths'
 import React, { useState } from 'react'
 import {PROFILE_PATH} from 'constants/paths'
 
@@ -47,6 +47,18 @@ export function useNewPostCreation() {
   const toggleDialog = () => changeDialogState(!newDialogOpen)
 
   function addPost(newInstance) {
+    var newTags = {}
+    //formats tags for firebase
+    if(newInstance.tags !== "") {
+      let tags = newInstance.tags.split(",");
+
+      tags.forEach((tag) => {
+        newTags[tag.trim()] = true;
+      })
+
+      newInstance.tags = newTags
+    }
+
     if(imageAsFile === '' ) {
       showError(`Please upload a valid image`)
     } else {
@@ -70,7 +82,7 @@ export function useNewPostCreation() {
          })
          .catch((err) => {
            console.error('Error:', err) // eslint-disable-line no-console
-           showError(err.message || 'Could not add project')
+           showError(err.message || 'Could not add post')
            return Promise.reject(err)
          })
        })
@@ -120,4 +132,15 @@ export function useCommentsList(postId) {
 
   const comments = useDatabaseObject(commentsRef).snapshot.val()
   return { comments }
+}
+
+export function useSearchByTag(tag) {
+  const database = useDatabase()
+  const postsRef = database
+  .ref(POSTS_COLLECTION)
+  .orderByChild(`${TAGS_COLLECTION}/${tag}`)
+  .equalTo(true)
+
+  const posts = useDatabaseList(postsRef)
+  return { posts }
 }
