@@ -12,12 +12,14 @@ export default (theme) => ({
     justifyContent: 'center',
     flexGrow: 1,
     padding: '1.25rem',
-    minWidth: '250px',
-    minHeight: '270px'
+    width: '250px',
+    minHeight: '270px',
+    margin: '100px auto 0'
   },
   orLabel: {
     marginTop: '1rem',
-    marginBottom: '.5rem'
+    marginBottom: '.5rem',
+    textAlign: 'center'
   },
   login: {
     ...theme.flexColumnCenter,
@@ -32,6 +34,23 @@ export default (theme) => ({
     fontSize: '1.2rem'
   },
   providers: {
-    marginTop: '1rem'
+    marginTop: '1rem',
+  },
+  center: {
+    width: '50%',
+    margin: 'auto' 
+  },
+  gridListPost: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    backgroundColor: theme.palette.background.paper,
+    margin: '100px',
+    minHeight: '500px'
+  },
+  gridList: {
+    width: 500,
+    height: 450,
   }
 })

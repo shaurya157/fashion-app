@@ -5,7 +5,7 @@ export default (theme) => ({
     cursor: 'pointer',
     height: '200px',
     width: '300px',
-    margin: theme.spacing(0.5),
+    margin: '0.5px auto',
     padding: theme.spacing(1.3),
     overflow: 'hidden'
   },
