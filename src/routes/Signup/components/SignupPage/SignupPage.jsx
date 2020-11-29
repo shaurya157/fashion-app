@@ -42,7 +42,12 @@ function SignUpSection() {
       ).then(function({user}) {
         var data = {
           email: user.email,
-          username: formValues.username
+          username: formValues.username,
+          likes: {
+            tempLike: {
+              tempLike: true
+            }
+          }
         }
 
         database.ref(`${USERS_COLLECTION}/${user.uid}`)

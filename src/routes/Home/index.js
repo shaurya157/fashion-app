@@ -1,7 +1,10 @@
-import HomePage from './components/HomePage'
+import { HOME_PATH as path } from 'constants/paths'
+import { loadable } from 'utils/router';
 
-// Sync route definition
 export default {
-  path: '/',
-  component: HomePage
+  path,
+  component: loadable(() =>
+    import(/* webpackChunkName: 'Posts' */ './components/HomePage'),
+  ),
+  authRequired: true
 }

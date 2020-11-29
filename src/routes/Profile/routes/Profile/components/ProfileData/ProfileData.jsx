@@ -15,7 +15,7 @@ function ProfileData() {
 
   const profileSnap = useDatabaseObject(profileRef)
   const profile = profileSnap.snapshot.val()
-
+  
   return (
     <CardContent>
       <Typography component="h2">

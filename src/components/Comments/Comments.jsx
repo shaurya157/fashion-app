@@ -39,7 +39,7 @@ function Comments({commentsObj, onSubmit}) {
   return (
     <>
     <List className={classes.root}>
-    {commentsArr.map(comment => {
+    {commentsArr.map((comment, index) => {
       console.log("Comment", comment);
       return (
         <React.Fragment key={comment.id}>

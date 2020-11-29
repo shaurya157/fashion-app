@@ -7,30 +7,31 @@ import CoreLayout from '../layouts/CoreLayout'
 import Home from './Home'
 import LoginRoute from './Login'
 import SignupRoute from './Signup'
-import ProjectsRoute from './Projects'
 import AccountRoute from './Account'
 import NotFoundRoute from './NotFound'
 import ProfileRoute from './Profile'
 import PostsRoute from './Posts'
 import SearchRoute from './Search'
+import HomeRoute from './Home'
+
+// {/* eslint-disable-next-line react/jsx-pascal-case */}
+// <Route exact path={Home.path} component={() => <Home.component />} />
 
 export default function createRoutes() {
   return (
     <CoreLayout>
       <SuspenseWithPerf fallback={<LoadingSpinner />} traceId="router-wait">
         <Switch>
-          {/* eslint-disable-next-line react/jsx-pascal-case */}
-          <Route exact path={Home.path} component={() => <Home.component />} />
           {
             /* Build Route components from routeSettings */
             [
               AccountRoute,
-              ProjectsRoute,
               SignupRoute,
               LoginRoute,
               ProfileRoute,
               PostsRoute,
-              SearchRoute
+              SearchRoute,
+              HomeRoute,
               /* Add More Routes Here */
             ].map((settings) =>
               settings.authRequired ? (

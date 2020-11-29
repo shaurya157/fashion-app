@@ -25,7 +25,10 @@ function AccountEditor() {
     const newCreds = {
       photoURL: newAccount.photoURL,
       username: newAccount.displayName,
-      email: newAccount.email
+      email: newAccount.email,
+      likes: {
+        temp: true
+      }
     }
 
     try {

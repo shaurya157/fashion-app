@@ -20,7 +20,7 @@ function SearchPage() {
     <div className={classes.root}>
       <Card className={classes.card}>
         <SuspenseWithPerf fallback={<LoadingSpinner />} traceId="load-project">
-          <PostsDisplay posts={posts}/>
+          <PostsDisplay posts={posts} showDelete={false}/>
         </SuspenseWithPerf>
       </Card>
     </div>

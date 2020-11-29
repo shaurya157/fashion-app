@@ -1,7 +1,7 @@
-export const LIST_PATH = '/projects'
 export const ACCOUNT_PATH = '/account'
 export const LOGIN_PATH = '/login'
 export const SIGNUP_PATH = '/signup'
 export const PROFILE_PATH = '/profile'
 export const POSTS_PATH = '/post'
 export const SEARCH_PATH = '/search'
+export const HOME_PATH = '/home'

@@ -21,7 +21,7 @@ function AccountMenu() {
   const [anchorEl, setMenu] = useState(null)
   const firebase = useFirebaseApp()
   const auth = useUser()
-  const userId = auth.uid;
+  const userId = auth.displayName;
   function closeAccountMenu() {
     setMenu(null)
   }

@@ -1,8 +1,16 @@
 export default (theme) => ({
   root: {
-    padding: theme.spacing(2)
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+    overflowY: 'scroll'
   },
-  card: {
-    marginBottom: theme.spacing(2)
+  gridItem: {
+    textAlign: 'center',
+    marginTop: theme.spacing(5)
+  },
+  pane: {
+    // ...theme.flexColumnCenter,
+    justifyContent: 'space-around',
+    padding: theme.spacing(6)
   }
 })

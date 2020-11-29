@@ -5,6 +5,7 @@ import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
+import PostsDisplay from 'components/PostsDisplay'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -18,7 +19,7 @@ function TabPanel(props) {
       {...other}>
       {value === index && (
         <Box p={3}>
-          <Typography>{children}</Typography>
+          <div>{children}</div>
         </Box>
       )}
     </div>
@@ -65,13 +66,29 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function CustomizedTabs() {
+export default function CustomizedTabs({user, posts}) {
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
+
+  let likedPosts = []
+
+  posts.forEach(({snapshot}, ind) => {
+    var key = snapshot.key
+    let liked = user.likes.find(like => {
+      let subKey = Object.keys(like)[0];
+      return ((subKey === key) && like[subKey])
+    })
+
+    if(liked) {
+      likedPosts.push(posts[ind])
+    }
+  })
+
+  console.log(likedPosts);
 
   return (
     <div className={classes.root}>
@@ -84,11 +101,11 @@ export default function CustomizedTabs() {
           <StyledTab label="Like" />
         </StyledTabs>
         <Typography className={classes.padding} />
-        <TabPanel value={value} index={0}>
-          Post (TAB) Content
+        <TabPanel component={'span'} value={value} index={0}>
+          <PostsDisplay posts={posts} />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Like Content
+          <PostsDisplay posts={likedPosts} />
         </TabPanel>
       </div>
     </div>

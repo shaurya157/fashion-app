@@ -11,9 +11,10 @@ const useStyles = makeStyles(styles)
 
 function PostsPage() {
   const match = useRouteMatch()
+  const classes = useStyles()
 
   return (
-    <Switch>
+    <Switch className={classes.root}>
       {/* Child routes */}
       {renderChildren([PostRoute])}
       {/* Main Route */}

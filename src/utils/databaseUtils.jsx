@@ -1,6 +1,6 @@
 import { useNotifications } from 'modules/notification'
 import { useDatabaseObject, useDatabase, useUser, useDatabaseList, useStorage } from 'reactfire'
-import { POSTS_COLLECTION, TAGS_COLLECTION } from 'constants/firebasePaths'
+import { POSTS_COLLECTION, TAGS_COLLECTION, USERS_COLLECTION } from 'constants/firebasePaths'
 import React, { useState } from 'react'
 import {PROFILE_PATH} from 'constants/paths'
 
@@ -14,6 +14,21 @@ export function usePostsList(profileId) {
     .ref(POSTS_COLLECTION)
     .orderByChild('createdBy')
     .equalTo(profileId)
+
+  // Query for posts (loading handled by Suspense in PostsList)
+  const posts = useDatabaseList(postsRef)
+
+  return { posts }
+}
+
+export function useAllPostsList() {
+  const { showSuccess, showError } = useNotifications()
+
+  // Create a ref for posts owned by the current user
+  const database = useDatabase()
+  const postsRef = database
+    .ref(POSTS_COLLECTION)
+    .orderByChild('createdBy')
 
   // Query for posts (loading handled by Suspense in PostsList)
   const posts = useDatabaseList(postsRef)
@@ -72,7 +87,7 @@ export function useNewPostCreation() {
          .ref(POSTS_COLLECTION)
          .push({
            ...newInstance,
-           createdBy: auth.uid,
+           createdBy: auth.displayName,
            imageUrl: fireBaseUrl,
            createdAt: Date.now()
          })
@@ -143,4 +158,86 @@ export function useSearchByTag(tag) {
 
   const posts = useDatabaseList(postsRef)
   return { posts }
+}
+
+export function usePostLike() {
+  const { showSuccess, showError } = useNotifications()
+  const auth = useUser()
+  const database = useDatabase()
+
+  function addLike(postId, userId, likeId) {
+    const likesRef = database.ref(`${POSTS_COLLECTION}/${postId}/likes`)
+    const profileLikesRef = database.ref(`${USERS_COLLECTION}/${userId}/likes`)
+    likesRef.transaction(function(likes) {
+        return (likes || 0) + 1
+    })
+
+    let data = {}
+    data[postId] = true
+
+    if(likeId) {
+      const likeRef = database.ref(`${USERS_COLLECTION}/${userId}/likes/${likeId}`);
+      likeRef.set(data).then(() => {
+        showSuccess('Like added successfully')
+      })
+      .catch((err) => {
+        console.error('Error:', err) // eslint-disable-line no-console
+        showError(err.message || 'Could not add Like')
+        return Promise.reject(err)
+      })
+    } else {
+      profileLikesRef.push(data)
+      .then(() => {
+        showSuccess('Like added successfully')
+      })
+      .catch((err) => {
+        console.error('Error:', err) // eslint-disable-line no-console
+        showError(err.message || 'Could not add Like')
+        return Promise.reject(err)
+      })
+    }
+  }
+
+  function removeLike(postId, userId, likeId) {
+    const likesRef = database.ref(`${POSTS_COLLECTION}/${postId}/likes`)
+    const profileLikesRef = database.ref(`${USERS_COLLECTION}/${userId}/likes/${likeId}`)
+    likesRef.transaction(function(likes) {
+        return (likes || 0) - 1
+    })
+
+    let data = {}
+    data[postId] = false
+
+    profileLikesRef.update(data)
+    .then(() => {
+      showSuccess('Like deleted successfully')
+    })
+    .catch((err) => {
+      console.error('Error:', err) // eslint-disable-line no-console
+      showError(err.message || 'Could not delete Like')
+      return Promise.reject(err)
+    })
+  }
+
+  return {addLike, removeLike}
+}
+
+export function useUserDetails() {
+  const auth = useUser()
+  const database = useDatabase()
+  const profileRef = database.ref(`${USERS_COLLECTION}/${auth.uid}`)
+  const profileSnap = useDatabaseObject(profileRef)
+  const profile = profileSnap.snapshot.val()
+  profile.displayName = profile.username
+  profile.uid = auth.uid;
+
+  let formattedLikes = []
+  Object.keys(profile.likes).forEach(likeKey => {
+    let tempLike = profile.likes[likeKey]
+    tempLike.likeId = likeKey
+    formattedLikes.push(tempLike)
+  })
+
+  profile.likes = formattedLikes
+  return {profile}
 }

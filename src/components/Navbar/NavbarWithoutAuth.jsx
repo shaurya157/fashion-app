@@ -14,7 +14,7 @@ import styles from './Navbar.styles'
 
 const useStyles = makeStyles(styles)
 
-function NavbarWithoutAuth({ children, brandPath = '/' }) {
+function NavbarWithoutAuth({ children, brandPath = '/home' }) {
   const classes = useStyles()
   const { toggleDarkMode, isDarkMode } = useContext(ThemeContext)
 
@@ -28,7 +28,7 @@ function NavbarWithoutAuth({ children, brandPath = '/' }) {
           to={brandPath}
           className={classes.brand}
           data-test="brand">
-          Project
+          Home
         </Typography>
         <div className={classes.flex} />
         <Tooltip title="Toggle light/dark theme">
