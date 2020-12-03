@@ -29,7 +29,9 @@ function SignupForm({ onSubmit }) {
         autoComplete="username"
         margin="normal"
         fullWidth
-        inputRef={register}
+        inputRef={register({
+          required: true
+        })}
       />
       <TextField
         type="email"

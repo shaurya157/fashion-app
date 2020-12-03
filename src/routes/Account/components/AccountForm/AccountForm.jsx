@@ -23,17 +23,10 @@ function AccountForm({ account, onSubmit }) {
     nativeValidation: false,
     defaultValues: account
   })
-
+  console.log(register);
   return (
     <form className={classes.root} onSubmit={handleSubmit(onSubmit)}>
       <div className={classes.fields}>
-        <TextField
-          name="displayName"
-          label="Display Name"
-          margin="normal"
-          inputRef={register}
-          fullWidth
-        />
         <TextField
           type="email"
           name="email"

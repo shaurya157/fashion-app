@@ -35,7 +35,7 @@ function ProfileInfo({user, posts}) {
         <Grid item xs={12} md={4} lg={4} className={classes.gridItem}>
           <Typography variant="h5">{user.username}</Typography>
           <Typography variant="subtitle2">{`${posts.length} Posts `}</Typography>
-          <Typography variant="subtitle2">{`${numLikes()} Likes `}</Typography>
+          <Typography variant="subtitle2">{`${numLikes() - 1} Likes `}</Typography>
         </Grid>
         <Grid item xs={12} md={4} lg={4} className={classes.gridItem}>
           <Button variant="outlined" onClick={() => history.push('/account')}>

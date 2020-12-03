@@ -6,6 +6,7 @@ import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import PostsDisplay from 'components/PostsDisplay'
+import {useLikedPosts } from 'utils/databaseUtils'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -74,21 +75,17 @@ export default function CustomizedTabs({user, posts}) {
     setValue(newValue)
   }
 
-  let likedPosts = []
+  let likedPostIds = []
 
-  posts.forEach(({snapshot}, ind) => {
-    var key = snapshot.key
-    let liked = user.likes.find(like => {
-      let subKey = Object.keys(like)[0];
-      return ((subKey === key) && like[subKey])
-    })
-
-    if(liked) {
-      likedPosts.push(posts[ind])
+  user.likes.forEach((like) => {
+    let id = Object.keys(like)[0]
+    if((!like.temp || !like.tempLike) && like[id] == true ){
+      likedPostIds.push(Object.keys(like)[0])
     }
   })
 
-  console.log(likedPosts);
+  const {likedPosts} = useLikedPosts();
+  const likedPostsToDisplay = likedPosts(likedPostIds);
 
   return (
     <div className={classes.root}>
@@ -102,10 +99,10 @@ export default function CustomizedTabs({user, posts}) {
         </StyledTabs>
         <Typography className={classes.padding} />
         <TabPanel component={'span'} value={value} index={0}>
-          <PostsDisplay posts={posts} />
+          <PostsDisplay posts={posts} showDelete={true}/>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <PostsDisplay posts={likedPosts} />
+          <PostsDisplay posts={likedPostsToDisplay} showDelete={false} />
         </TabPanel>
       </div>
     </div>

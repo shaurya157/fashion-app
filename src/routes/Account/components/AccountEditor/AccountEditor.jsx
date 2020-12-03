@@ -27,7 +27,9 @@ function AccountEditor() {
       username: newAccount.displayName,
       email: newAccount.email,
       likes: {
-        temp: true
+        temp: {
+          tempLike: true
+        }
       }
     }
 

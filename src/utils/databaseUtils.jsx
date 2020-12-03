@@ -16,7 +16,13 @@ export function usePostsList(profileId) {
     .equalTo(profileId)
 
   // Query for posts (loading handled by Suspense in PostsList)
-  const posts = useDatabaseList(postsRef)
+  let postsSnapshot = useDatabaseList(postsRef)
+  let posts = []
+  postsSnapshot.map(({ snapshot }, ind) => {
+    let tempObj = snapshot.val();
+    tempObj.postId = snapshot.key;
+    posts.push(tempObj);
+  });
 
   return { posts }
 }
@@ -31,7 +37,13 @@ export function useAllPostsList() {
     .orderByChild('createdBy')
 
   // Query for posts (loading handled by Suspense in PostsList)
-  const posts = useDatabaseList(postsRef)
+  let postsSnapshot = useDatabaseList(postsRef)
+  let posts = []
+  postsSnapshot.map(({ snapshot }, ind) => {
+    let tempObj = snapshot.val();
+    tempObj.postId = snapshot.key;
+    posts.push(tempObj);
+  });
 
   return { posts }
 }
@@ -93,7 +105,7 @@ export function useNewPostCreation() {
          })
          .then(() => {
            toggleDialog()
-           showSuccess('Project added successfully')
+           showSuccess('Post added successfully')
          })
          .catch((err) => {
            console.error('Error:', err) // eslint-disable-line no-console
@@ -156,7 +168,14 @@ export function useSearchByTag(tag) {
   .orderByChild(`${TAGS_COLLECTION}/${tag}`)
   .equalTo(true)
 
-  const posts = useDatabaseList(postsRef)
+  let postsSnapshot = useDatabaseList(postsRef)
+  let posts = []
+  postsSnapshot.map(({ snapshot }, ind) => {
+    let tempObj = snapshot.val();
+    tempObj.postId = snapshot.key;
+    posts.push(tempObj);
+  });
+
   return { posts }
 }
 
@@ -240,4 +259,42 @@ export function useUserDetails() {
 
   profile.likes = formattedLikes
   return {profile}
+}
+
+export function useLikedPosts() {
+  const database = useDatabase()
+  const postsRef = database.ref(`${POSTS_COLLECTION}`)
+  const postsSnap = useDatabaseObject(postsRef)
+
+  // const postsRef = database
+  //   .ref(POSTS_COLLECTION)
+  //   .orderByChild('createdBy')
+  //
+  // // Query for posts (loading handled by Suspense in PostsList)
+  // const posts = useDatabaseList(postsRef)
+
+
+  function likedPosts(likeIds) {
+    const result = []
+    // Object.keys(posts).forEach(postKey => {
+    //   let tempLike = profile.likes[likeKey]
+    //   tempLike.likeId = likeKey
+    //   formattedLikes.push(tempLike)
+    // })
+
+    postsRef.once("value", function(snapshot) {
+      // debugger
+        snapshot.forEach(function(childSnapshot) {
+            if (likeIds.includes(childSnapshot.key)) {
+              let tempObj = childSnapshot.val();
+              tempObj.postId = childSnapshot.key;
+              result.push(tempObj);
+            }
+        });
+    });
+
+    return result
+  }
+
+  return {likedPosts}
 }

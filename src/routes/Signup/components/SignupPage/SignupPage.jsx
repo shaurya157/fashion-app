@@ -7,7 +7,7 @@ import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
 import { useAuth, useDatabase } from 'reactfire'
 import { makeStyles } from '@material-ui/core/styles'
-import { LOGIN_PATH, PROFILE_PATH } from 'constants/paths'
+import { LOGIN_PATH, HOME_PATH } from 'constants/paths'
 import { useNotifications } from 'modules/notification'
 import SignupForm from '../SignupForm'
 import styles from './SignupPage.styles'
@@ -28,7 +28,7 @@ function SignUpSection() {
     try {
       await auth.signInWithPopup(provider)
       // NOTE: window.location used since history.push/replace does not always work
-      window.location = PROFILE_PATH
+      window.location = HOME_PATH
     } catch (err) {
       showError(err.message)
     }
@@ -40,11 +40,15 @@ function SignUpSection() {
         formValues.email,
         formValues.password
       ).then(function({user}) {
+        user.updateProfile({
+            displayName: formValues.username
+        })
+
         var data = {
           email: user.email,
           username: formValues.username,
           likes: {
-            tempLike: {
+            temp: {
               tempLike: true
             }
           }
@@ -55,7 +59,7 @@ function SignUpSection() {
       })
 
       // NOTE: window.location used since history.push/replace does not always work
-      window.location = PROFILE_PATH
+      window.location = HOME_PATH
     } catch (err) {
       showError(err.message)
     }
