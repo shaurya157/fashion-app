@@ -35,8 +35,13 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
     "firebase": "^7.21.0",
     "material-ui-search-bar": "^1.0.0",
+    "mongodb": "^3.6.3",
     "notistack": "^1.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
@@ -107,5 +112,6 @@
   },
   "config": {
     "port": 3000
-  }
+  },
+  "proxy": "http://localhost:8080"
 }
