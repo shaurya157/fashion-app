@@ -8,7 +8,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Tooltip from '@material-ui/core/Tooltip'
 import DeleteIcon from '@material-ui/icons/Delete'
-import { POSTS_PATH } from 'constants/paths'
+import { POSTS_PATH, PROFILE_PATH } from 'constants/paths'
 import { useNotifications } from 'modules/notification'
 import { useHistory } from 'react-router-dom'
 import { useDatabase, useUser } from 'reactfire'
@@ -29,6 +29,10 @@ function PostTile({ name, postId, showDelete }) {
 
   function goToPost() {
     return history.push(`${POSTS_PATH}/${postId}`)
+  }
+
+  function goToProfile() {
+    return history.push(`${PROFILE_PATH}/${post.createdBy}`)
   }
 
   function sendAddLike() {
@@ -66,6 +70,19 @@ function PostTile({ name, postId, showDelete }) {
       })
   }
 
+  let likeDislikeorDelete = (value) => {
+    return (e) => {
+      e.stopPropagation();
+      if(value === "like") {
+        sendAddLike();
+      } else if (value === "dislike") {
+        sendRemoveLike();
+      } else {
+        deletePost();
+      }
+    }
+  }
+
   const styles = {
     imageContainer: {
         height: 250,
@@ -81,21 +98,23 @@ function PostTile({ name, postId, showDelete }) {
       <div style={styles.imageContainer} onClick={goToPost}>
       </div>
       <GridListTileBar
+        onClick={goToProfile}
+        style={{cursor: "pointer"}}
         title={post.description}
         subtitle={<span>by: {post.createdBy}</span>}
         actionIcon={
           !showDelete ? (
             liked ? (
-              <IconButton onClick={sendRemoveLike} aria-label={`info about ${post.description}`} className={classes.icon}>
+              <IconButton name="like" onClick={likeDislikeorDelete("dislike")} aria-label={`info about ${post.description}`} className={classes.icon}>
                 <FavoriteIcon style={{color:`white`}} />
               </IconButton>
             ) : (
-              <IconButton onClick={sendAddLike} aria-label={`info about ${post.description}`} className={classes.icon}>
+              <IconButton onClick={likeDislikeorDelete("like")} aria-label={`info about ${post.description}`} className={classes.icon}>
                 <FavoriteBorderIcon style={{color:`white`}} />
               </IconButton>
             )
           ) : (
-            <IconButton onClick={deletePost}>
+            <IconButton onClick={likeDislikeorDelete("delete")}>
               <DeleteIcon style={{color:`white`}}/>
             </IconButton>
           )

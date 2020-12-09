@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useFirebaseApp } from 'reactfire'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import IconButton from '@material-ui/core/IconButton'
@@ -12,7 +12,8 @@ import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 import NewPostDialog from './NewPostDialog'
 import { useNewPostCreation, useSearchByTag } from 'utils/databaseUtils'
 import { useUser } from 'reactfire'
-import SearchBar from "material-ui-search-bar";
+import { Autocomplete } from '@material-ui/lab';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles(styles)
 
@@ -22,6 +23,8 @@ function AccountMenu() {
   const firebase = useFirebaseApp()
   const auth = useUser()
   const userId = auth.displayName;
+  const tags = [{tag: "bag"}, {tag: "profile"}, {tag: "profile1"}, {tag: "stationary"}]
+  const history = useHistory();
 
   function closeAccountMenu() {
     setMenu(null)
@@ -42,15 +45,31 @@ function AccountMenu() {
     uploadImage
   } = useNewPostCreation()
 
-  function handleSearchInput(input) {
-    window.location = SEARCH_PATH + `/${input}`
+  function handleSearchInput(event, inputValue) {
+    console.log(inputValue);
+    history.push(SEARCH_PATH + `/${inputValue.tag}`);
   }
 
+  function handleKeyDown(ev) {
+    if(ev.keyCode === 13) {
+      handleSearchInput(ev, {tag: ev.target.value})
+    }
+  }
+
+  // <Autocomplete
+  //   cancelOnEscape
+  //   onRequestSearch={handleSearchInput}
+  // />
   return (
     <>
-    <SearchBar
-      cancelOnEscape
-      onRequestSearch={handleSearchInput}
+    <Autocomplete
+      id="combo-box-demo"
+      options={tags}
+      getOptionLabel={(option) => option.tag}
+      style={{ width: 300 }}
+      onChange={handleSearchInput}
+      onKeyDown={handleKeyDown}
+      renderInput={(params) => <TextField {...params} label="Search for tag" margin="normal" variant="outlined" />}
     />
       <IconButton
         aria-owns={anchorEl ? 'menu-appbar' : null}

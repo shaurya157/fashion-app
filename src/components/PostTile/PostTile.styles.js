@@ -26,6 +26,9 @@ export default (theme) => ({
     },
     '&:visited': {
       textDecoration: 'none'
+    },
+    cursor: {
+      cursor: "pointer"
     }
   }
 })

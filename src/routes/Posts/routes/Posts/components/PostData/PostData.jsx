@@ -29,11 +29,7 @@ function PostData({ post, onSubmit }) {
     <Grid container className={classes.root} justify="center">
       <Grid item xs={10} className={classes.gridItem}>
         <Paper className={classes.pane}>
-          <CardMedia
-            className={classes.media}
-            image={post.imageUrl}
-            title="Contemplative Reptile"
-          />
+          <img src={post.imageUrl}/>
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
               {post.title}
@@ -41,8 +37,8 @@ function PostData({ post, onSubmit }) {
             <Typography variant="body2" color="textSecondary" component="p">
               {post.description}
             </Typography>
-            Tags: {tempTags && tempTags.map(tag => {
-              return (<Typography variant="body2" color="textSecondary" component="p">
+            Tags: {tempTags && tempTags.map((tag, index) => {
+              return (<Typography key={`${tag}-${index}`} variant="body2" color="textSecondary" component="p">
                 {tag}
               </Typography>)
             })}

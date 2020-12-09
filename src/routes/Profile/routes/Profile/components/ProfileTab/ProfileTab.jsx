@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import PostsDisplay from 'components/PostsDisplay'
 import {useLikedPosts } from 'utils/databaseUtils'
+import { useUser } from 'reactfire'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -68,6 +69,8 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function CustomizedTabs({user, posts}) {
+  const auth = useUser()
+  const currUser = auth.displayName;
   const classes = useStyles()
   const [value, setValue] = React.useState(0)
 
@@ -86,6 +89,7 @@ export default function CustomizedTabs({user, posts}) {
 
   const {likedPosts} = useLikedPosts();
   const likedPostsToDisplay = likedPosts(likedPostIds);
+  const showDelete = posts[0] && (posts[0].createdby === currUser)
 
   return (
     <div className={classes.root}>
@@ -99,7 +103,7 @@ export default function CustomizedTabs({user, posts}) {
         </StyledTabs>
         <Typography className={classes.padding} />
         <TabPanel component={'span'} value={value} index={0}>
-          <PostsDisplay posts={posts} showDelete={true}/>
+          <PostsDisplay posts={posts} showDelete={showDelete}/>
         </TabPanel>
         <TabPanel value={value} index={1}>
           <PostsDisplay posts={likedPostsToDisplay} showDelete={false} />
