@@ -23,17 +23,6 @@ function SignUpSection() {
   const { GoogleAuthProvider } = useAuth
   const database = useDatabase()
 
-  async function googleLogin() {
-    const provider = new GoogleAuthProvider()
-    try {
-      await auth.signInWithPopup(provider)
-      // NOTE: window.location used since history.push/replace does not always work
-      window.location = HOME_PATH
-    } catch (err) {
-      showError(err.message)
-    }
-  }
-
   async function emailSignup(formValues) {
     try {
       await auth.createUserWithEmailAndPassword(
@@ -70,10 +59,6 @@ function SignUpSection() {
       <Paper className={classes.panel}>
         <SignupForm onSubmit={emailSignup} />
       </Paper>
-      <div className={classes.orLabel}>or</div>
-      <div className={classes.providers}>
-        <GoogleButton onClick={googleLogin} data-test="google-auth-button" className={classes.center}/>
-      </div>
       <div className={classes.login}>
         <span className={classes.loginLabel}>Already have an account?</span>
         <Link className={classes.loginLink} to={LOGIN_PATH}>

@@ -14,19 +14,7 @@ const useStyles = makeStyles(styles)
 function LoginPage() {
   const classes = useStyles()
   const auth = useAuth()
-  const { GoogleAuthProvider } = useAuth
   const { showError } = useNotifications()
-
-  async function googleLogin() {
-    const provider = new GoogleAuthProvider()
-    try {
-      await auth.signInWithPopup(provider)
-      // NOTE: window.location used since history.push/replace does not always work
-      window.location = HOME_PATH
-    } catch (err) {
-      showError(err.message)
-    }
-  }
 
   async function emailLogin(formValues) {
     try {
@@ -46,10 +34,6 @@ function LoginPage() {
       <Paper className={classes.panel}>
         <LoginForm onSubmit={emailLogin} />
       </Paper>
-      <div className={classes.orLabel}>or</div>
-      <div className={classes.providers}>
-        <GoogleButton onClick={googleLogin} data-test="google-auth-button" />
-      </div>
       <div className={classes.signup}>
         <span className={classes.signupLabel}>Need an account?</span>
         <Link className={classes.signupLink} to={SIGNUP_PATH}>

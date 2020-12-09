@@ -18,6 +18,11 @@
   *:after {
     box-sizing: inherit;
   }
+
+  .MuiToolbar-root.MuiToolbar-regular.MuiToolbar-gutters{
+        background-color: #EFD9D5;
+        color: black;
+  }
   /* [type=button]{
     -webkit-appearance: none !important;
   } */
