@@ -18,7 +18,7 @@
     "deploy": "firebase deploy --only functions"
   },
   "dependencies": {
-    "firebase-admin": "^9.1.0",
+    "firebase-admin": "^11.0.1",
     "firebase-functions": "^3.9.1",
     "glob": "^7.1.6",
     "source-map-support": "^0.5.19"
